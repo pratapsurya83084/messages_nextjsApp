@@ -5,7 +5,7 @@ import { success } from "zod/v4";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerification_email";
 
-export async function name(request: Request) {
+export async function POST(request: Request) {
   await dbConnect();
 
   try {
@@ -27,6 +27,7 @@ export async function name(request: Request) {
     const existingUserByEmail = await UserModel.findOne({ email });
     //generate verifyCode
     const verifyCode = Math.floor(100000 + Math.random() * 900000).toString();
+    // console.log("verification code is : ",verifyCode); //its ok genearted 6 digitcode
     
     if (existingUserByEmail) {
 

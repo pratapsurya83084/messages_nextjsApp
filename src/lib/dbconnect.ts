@@ -20,7 +20,7 @@ async function dbConnect(): Promise<void> {
     );
 
     connection.isConnected = db.connections[0].readyState;
-    console.log("Connected to MongoDB database", db);
+    // console.log("Connected to MongoDB database", db);
   } catch (error) {
     console.log("Connected to  database failed : ", error);
     process.exit(1);
