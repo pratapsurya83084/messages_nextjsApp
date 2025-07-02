@@ -1,14 +1,17 @@
 import dbConnect from "@/lib/dbconnect";
 import { z } from "zod";
 import UserModel from "@/models/User";
-import { NextResponse } from "next/server";
+
 import { userValidation } from "@/schemas/signupSchema";
-import { success } from "zod/v4";
+
 
 // Define the Zod schema for query validation
 const UsernameQuerySchema = z.object({
   username: userValidation,
 });
+
+
+
 
 export async function GET(request: Request) {
 
