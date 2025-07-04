@@ -1,10 +1,9 @@
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useDebounceValue, useDebounceCallback } from "usehooks-ts";
+import { useDebounceCallback } from "usehooks-ts";
 import { toast } from "sonner";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // ✅ FIXED HERE
@@ -14,7 +13,6 @@ import { ApiResponse } from "@/types/Apiresponse";
 import {
   Form,
   FormControl,
- 
   FormField,
   FormItem,
   FormLabel,
@@ -30,7 +28,6 @@ const Page = () => {
   const [usernameMessage, setusernameMessage] = useState("");
   const [isCheckingUsername, setisCheckingUsername] = useState(false);
   const [isSubmitting, setisSubmitting] = useState(false);
-
   const debounced = useDebounceCallback(setusername, 1000);
   const router = useRouter();
 
@@ -46,8 +43,8 @@ const Page = () => {
   useEffect(() => {
     async function checkUsername() {
       if (username) {
-        setisCheckingUsername(true)
-        setusernameMessage('')
+        setisCheckingUsername(true);
+        setusernameMessage("");
         try {
           const api = await axios.get(
             `/api/check-username-unique?username=${username}`
@@ -55,7 +52,9 @@ const Page = () => {
           setusernameMessage(api.data.message);
         } catch (error) {
           const axiosError = error as AxiosError<ApiResponse>;
-          setusernameMessage(axiosError.response?.data.message ?? "Error checking username");
+          setusernameMessage(
+            axiosError.response?.data.message ?? "Error checking username"
+          );
         } finally {
           setisCheckingUsername(false);
         }
@@ -113,7 +112,9 @@ const Page = () => {
                     />
                   </FormControl>
                   {isCheckingUsername && <Loader2 className="animate-spin" />}
-                  <p className={`text-sm ${usernameMessage==="Username is available or unique"?'text-green-500':'text-red-500'}`}>
+                  <p
+                    className={`text-sm ${usernameMessage === "Username is available or unique" ? "text-green-500" : "text-red-500"}`}
+                  >
                     test {usernameMessage}
                   </p>
                   <FormMessage />
