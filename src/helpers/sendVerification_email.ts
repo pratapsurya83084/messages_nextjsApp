@@ -5,7 +5,8 @@ import { ApiResponse } from "@/types/Apiresponse";
 export async function sendVerificationEmail( email: string,username: string,verifyCode: string): Promise<ApiResponse> {
   try {
    console.log("verification code is : ",verifyCode  +" "+username +" "+email);
-  const response =  await resend.emails.send({
+
+   const response =  await resend.emails.send({
       from: "onboarding@resend.dev",
       to: email,
       subject: "Mystry message Verification code : ",

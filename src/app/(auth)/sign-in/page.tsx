@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2 } from "lucide-react";
+// import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { SignInSchema } from "@/schemas/signInSchema";
 import { signIn } from "next-auth/react";
@@ -30,7 +30,7 @@ const Page = () => {
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
     defaultValues: {
-      identifier: "",
+      email: "",
       password: "",
     },
   });
@@ -38,7 +38,7 @@ const Page = () => {
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     const result = await signIn("credentials", {
       redirect: false,
-      identifier: data.identifier,
+      email: data.email,
       password: data.password,
     });
 
@@ -69,7 +69,7 @@ const Page = () => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
-              name="identifier"
+              name="email"
               control={form.control}
               render={({ field }) => (
                 <FormItem>

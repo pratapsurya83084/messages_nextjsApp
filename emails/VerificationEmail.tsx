@@ -43,7 +43,7 @@ export default function VerificationEmail({ username, otp }: VerificationEmailPr
           </Text>
         </Row>
         <Row>
-          <Text>{otp}</Text> 
+          <Text style={{color:"green"}}>{otp}</Text> 
         </Row>
         <Row>
           <Text>

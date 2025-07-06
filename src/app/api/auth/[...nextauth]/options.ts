@@ -27,8 +27,8 @@ export const authOptions: NextAuthOptions = {
         try {
           const user = await UserModel.findOne({
             $or: [
-              { email: credentials.identifiers.email },
-              { username: credentials.identifiers.username },
+              { email: credentials.email },
+              { password: credentials.password },
             ],
           });
           
@@ -41,8 +41,9 @@ export const authOptions: NextAuthOptions = {
           }
 
           const isPasswordCorrect = await bcrypt.compare(
+            credentials.password,
             user.password,
-            credentials.password
+        
           );
           if (isPasswordCorrect) {
             return user;
