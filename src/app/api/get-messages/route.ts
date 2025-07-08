@@ -4,7 +4,7 @@ import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/models/User";
 import { User } from "next-auth";
 import { authOptions } from "../auth/[...nextauth]/options"; //user added in session so also we get this user
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 
 
 
@@ -13,13 +13,17 @@ export async function GET(request:Request){
 await dbConnect();
 
  const session = await getServerSession(authOptions);
-  const user: User = session?.user as User;
-
-  if (!session || !session.user) {
+ 
+ const user = session?.user as User  
+ const username = user?.username
+ // console.log("username is : " ,user?.username);
+console.log(username)
+  if (!session || !username) {
     return Response.json(
       {
         success: false,
         messsage: "User is not Authenticated",
+       user: username
       },
       { status: 401 }
     );

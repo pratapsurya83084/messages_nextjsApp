@@ -24,7 +24,7 @@ const page = () => {
   const [isSwitchingLoading, setIsSwitchingLoading] = useState(false);
 
 
-console.log('message fetching :',message);
+// console.log('message fetching :',message);
 
 
 const handleDeleteMessage = (messageId: string) => {
@@ -79,8 +79,8 @@ const fetchMessages = useCallback(async (refresh: boolean = false) => {
     const response = await axios.get<ApiResponse>('/api/get-messages');
 
     // Assuming you want to do something with the data:
-    setMessage(response.data.messages??[]); 
-
+    // setMessage(response?.data); 
+console.log(response.data?.messages);
     setIsLoading(false);
 if (refresh) {
   toast("success",{
@@ -144,7 +144,7 @@ try {
 
 const user = session?.user as User  
 const username = user?.username
-console.log("username is : " ,user?.username);
+// console.log("username is : " ,user?.username);
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 console.log(baseUrl);
