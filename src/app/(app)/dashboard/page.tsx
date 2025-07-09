@@ -281,6 +281,25 @@ const Page = () => {
 try {
   const response = await axios.delete(`/api/delete-message/${messageId}`)
   
+  if(response?.data?.success){
+    toast.success(
+        <div>
+          <div className="text-sm font-semibold">Success</div>
+          <div className="text-black text-sm">
+            {response.data.message || "Successfully sent message"}
+          </div>
+        </div>
+      );
+  }else{
+    toast.error(
+        <div>
+          <div className="text-sm font-semibold">failed</div>
+          <div className="text-black text-sm">
+            {response.data.message || "faile delete message"}
+          </div>
+        </div>
+      );
+  }
 
 } catch (error) {
   console.log("error deleting messages :" ,error)

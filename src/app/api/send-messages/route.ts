@@ -18,7 +18,7 @@ export async function POST(request: Request) {
 
 //check is user accepting messages or not
 const userMessage = user.isAcceptingMessage;
-
+console.log(userMessage)
 if (!userMessage) {
     return Response.json({
          success: false,
