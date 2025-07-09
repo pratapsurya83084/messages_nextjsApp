@@ -30,9 +30,10 @@ import axios from "axios";
 
 
 type MessageCardProps = {
-  message: Message;
-  onMessageDelete: (messageId: string) => void;
+  message: string;
+  onMessageDelete: (id: string) => void;
 };
+
 
 const MessageCard = ({ message, onMessageDelete }: MessageCardProps) => {
   const handelDeleteConfirm = async () => {

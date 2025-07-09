@@ -1,1 +1,2 @@
-1. 
+1. getMessage and display.
+2.if user not allow  then show error toast or disable send it  

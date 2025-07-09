@@ -1,74 +1,65 @@
-import { getServerSession } from "next-auth";
 
+import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/dbconnect";
 import UserModel from "@/models/User";
-import { User } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/options"; //user added in session so also we get this user
+import { authOptions } from "../auth/[...nextauth]/options";
 import mongoose from "mongoose";
 
+export async function GET(request: Request) {
+  await dbConnect();
 
+  const session = await getServerSession(authOptions);
 
-export async function GET(request:Request){
-
-await dbConnect();
-
- const session = await getServerSession(authOptions);
- 
- const user = session?.user as User  
- const username = user?.username
- // console.log("username is : " ,user?.username);
-console.log(username)
-  if (!session || !username) {
+  if (!session || !session.user) {
     return Response.json(
       {
         success: false,
-        messsage: "User is not Authenticated",
-       user: username
+        message: "User is not authenticated",
       },
       { status: 401 }
     );
   }
-  //find user if session is exists
-  const userId = new mongoose.Types.ObjectId(user._id);
 
   try {
-    
-const user = await UserModel.aggregate([
-    {$match:{id:userId}},
-    {$unwind:'$messages'},
-    {$sort:{'message.createdAt':-1}},
-    {$group:{_id:'$_id',messages:{$push:'$messages'}}}
-])
+    const userId = new mongoose.Types.ObjectId(session.user._id); // corrected
 
-if (!user||user.length===0) {
-     return Response.json(
+    const userMessages = await UserModel.aggregate([
+      { $match: { _id: userId } },
+      { $unwind: "$messages" },
+      { $sort: { "messages.createdAt": -1 } },
       {
-        success: false,
-        messsage: "User is not found",
+        $group: {
+          _id: "$_id",
+          messages: { $push: "$messages" },
+        },
       },
-      { status: 401 }
-    );
-}
+    ]);
 
+    if (!userMessages || userMessages.length === 0) {
+      return Response.json(
+        {
+          success: false,
+          message: "User not found",
+        },
+        { status: 404 }
+      );
+    }
 
- return Response.json(
+    return Response.json(
       {
         success: true,
-        messsage: user[0].messages
+        message: userMessages[0].messages,
       },
       { status: 200 }
     );
-
-
-
   } catch (error) {
-     return Response.json(
+    console.error("Error fetching messages:", error);
+    return Response.json(
       {
         success: false,
-        messsage: "User is not Authenticated",
+        message: "An error occurred while fetching user data",
       },
-      { status: 401 }
+      { status: 500 }
     );
   }
-
 }

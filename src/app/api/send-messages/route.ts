@@ -31,6 +31,7 @@ if (!userMessage) {
 const newMessage = {content , createdAt:new Date()}
 
  user.messages.push(newMessage as Message);
+ 
 user.save();
 
 return Response.json({
